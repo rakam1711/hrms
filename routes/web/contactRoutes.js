@@ -12,11 +12,11 @@ function initilization() {
 initilization();
 
 function getRoutes() {
-    
+
 }
 
 function postRoutes() {
-    contactRoutes.post('/addcontact',globlemiddleware.ractifyError,contactController.addContact)
+    contactRoutes.post('/addContact',globlemiddleware.ractifyError,contactController.addContact)
 }
 
 function putRoutes() {

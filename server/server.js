@@ -29,9 +29,8 @@ const setupBodyParser = () => {
   app.use(express.json());
 };
 const setupDatabase = () => {
-    console.log('MONGO_URI',env().MONGO_URI)
   mongoose
-    .connect(env().MONGO_URI)
+    .connect(env()?.MONGO_URI)
     .then((r) => {
       console.log("Connected to Database");
     })

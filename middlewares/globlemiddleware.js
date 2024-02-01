@@ -1,4 +1,6 @@
 const { validationResult } = require('express-validator');
+const formidable = require('formidable')
+const {env} = require('../environments/env')
 
 exports.ractifyError = (req, res, next) => {
 
@@ -9,4 +11,53 @@ exports.ractifyError = (req, res, next) => {
     } else {
         next(); // to next middleware
     }
+}
+
+exports.authenticate = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authorization) {
+        res.json({
+          success: false,
+          errors: { message: 'User not logged in' },
+          data: {}
+        }).status(404)
+        return
+      }
+    const token = authHeader.split(' ')[1]
+    try {
+        jwt.verify(token, env().jwt_secret, ((err, decoded) => {
+            if (err) {
+                next(err)
+            } else if (!decoded) {
+                req.errorStatus = 401;
+                next(new Error('User Not Authorised'))
+            } else {
+                req.employeeData = decoded;
+                next();
+            }
+        }))
+    } catch (e) {
+        req.errorStatus = 401;
+        next(e);
+    }
+}
+
+
+exports.formDataParser=(req,res,next)=>{
+    try {
+        let form = new formidable.IncomingForm()
+        form.parse(req,(err,fields={},files)=>{
+            if (err) {
+                console.log('err',err)
+                return
+            }
+            req.body = {...fields,files}
+            console.log('xxxxxxx',fields,files)
+            next()
+        })
+    } catch (error) {
+        req.errorStatus=401
+        next(error)
+    }
+   
 }

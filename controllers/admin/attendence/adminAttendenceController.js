@@ -1,16 +1,25 @@
-const db = require('../../../models/employee');
+const Attendence = require('../../../models/employee');
 
-const {Attendence} = db
 
-exports.addEmployee = async(req,res,next) =>{
-    try{
-    const {name, date , intime , outtime , place} = req.body;
-    const attendence = await Attendence.create({name, date , intime , outtime , place});
+
+exports.addAttendence = async(req,res,next) =>{
+    try{                                
+    const {name, date , intime , outtime , place,userId} = req.body;
+    const attendenceData = new Attendence({
+        userId:userId,
+        name:name,
+        date:date,
+        intime:intime,
+        outtime:outtime,
+        place:place,
+
+    })
+    const attendence =await attendenceData.save();
     return res.status(201).send({
-        statusText:'ssuccess',
+        statusText:'created',
         status:201,
         message:'attendence added.',
-        data:{}
+        data:{attendence}
     })
     }catch(error){
         res.status(400).send({

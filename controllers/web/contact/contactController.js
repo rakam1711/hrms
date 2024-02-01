@@ -14,14 +14,14 @@ exports.addContact = async(req,res,next)=>{
         }) 
         const contact = await contactData.save();
         return res.status(201).send({
-            statusText:'Created',
+            statusText:'CREATED',
             status:201,
             message:'Thank you for contacting us.',
             data:{}
         })
     } catch (error) {
         res.status(400).send({
-            statusText:'Bad Request',
+            statusText:'BAD REQUEST',
             status:400,
             message: error.message||'Getting error while creating contact data',
             data:{}
