@@ -1,6 +1,6 @@
 const express = require("express");
 const employeeRoutes = express.Router();
-const {addEmployee,employeeDetails , employeeUpdate , employeeDelete} = require('../../controllers/admin/employee/adminEmployeeController');
+const {addEmployee,employeeDetails , employeeUpdate , employeeDelete ,employeeLogin , employeeSignup} = require('../../controllers/admin/employee/adminEmployeeController');
 const {listingContacts} = require('../../controllers/admin/contact/adminContactController')
 const globlemiddleware = require('../../middlewares/globlemiddleware');
 
@@ -24,7 +24,7 @@ function getRoutes() {
 function postRoutes() {
     employeeRoutes.post('/addEmployee',globlemiddleware.formDataParser,globlemiddleware.ractifyError,addEmployee);
     employeeRoutes.post('/loginEmployee',globlemiddleware.ractifyError,employeeLogin);
-
+    employeeRoutes.post('/registerEmployee',globlemiddleware.ractifyError,employeeSignup);
 }
 
 function putRoutes() {

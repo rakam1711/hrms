@@ -1,18 +1,53 @@
+const Admin = require("../../../models/admin");
 const Employee = require("../../../models/employee");
 const formidable = require("formidable");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { env } = require("../../../environments/env");
 
+
+
+exports.employeeSignup = async (req, res, next) => {
+  try {
+    const data = req.body;
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const registration = new Admin({
+      name: data.name,
+      email: data.email,
+      password: hashedPassword,
+      status: true,
+      role: 'Admin',
+      created_on: new Date(),
+    });
+
+    const admin = await registration.save();
+    admin.password = null;
+
+    res.send({
+      status: 201,
+      message: "Admin Register Successfully",
+      data: { admin },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 exports.employeeLogin = async (req, res, next) => {
   try {
-    const data = req.body;
-    const employee = req.employeeData;
-    const isMatched = await bcrypt.compare(data.password, employee.password);
+    const {email , password} = req.body;
+    const employee = await Admin.findOne({email})
+    
+    const isMatched = await bcrypt.compare(password, employee.password);
         if (isMatched) {
             const token = jwt.sign(
-                { _id: Employee._id, email: Employee.email },
+                { _id: Admin._id, email: Admin.email },
                 env().jwt_secret
             );
-            user.password = null
+            Admin.password = null
+            if (!token) {
+              throw new Error('Unable to login the user')
+            }
             res.send({ status: 200, message: "User Login successfully", data: { employee, token } });
         } else {
             res.send({ status: 401, message: "Invalid email or password", data: {} });
