@@ -6,7 +6,7 @@ exports.addAttendence = async(req,res,next) =>{
     try{                                
     const {name, date , intime , outtime , place,userId} = req.body;
     const attendenceData = new Attendence({
-        userId:userId,
+        employeeId:req.employeeId,
         name:name,
         date:date,
         intime:intime,
