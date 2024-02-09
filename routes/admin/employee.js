@@ -24,7 +24,6 @@ function getRoutes() {
 function postRoutes() {
     employeeRoutes.post('/addEmployee',globlemiddleware.formDataParser,globlemiddleware.ractifyError,addEmployee);
     employeeRoutes.post('/loginEmployee',globlemiddleware.ractifyError,employeeLogin);
-    employeeRoutes.post('/registerEmployee',globlemiddleware.ractifyError,employeeSignup);
 }
 
 function putRoutes() {

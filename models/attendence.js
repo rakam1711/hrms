@@ -2,12 +2,14 @@ const mongoose = require('mongoose');
 const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const attendenceSchema = new mongoose.Schema({
-    employee :{type: mongoose.Schema.Types.ObjectId, ref: 'Employee', required :true},
-    name:{type:String ,required:true},
-    Date:{type:Date.now , required:true},
-    intime:{type:Date},
-    outtime:{type:Date},
-    place:{type:String , required:true},
+    employeeId :{
+        type: mongoose.Schema.ObjectId,
+         ref: 'Employee',
+          required :true},
+    date:{type:Date , required:true},
+    intime:{type:String},
+    outtime:{type:String},
+    place:{type:String ,},
     
 })
 

@@ -7,16 +7,28 @@ function initilization() {
     getRoutes();
     postRoutes();
     putRoutes();
+    patchRoutes();
+    deleteRoutes();
 }
 
 initilization();
 
 function getRoutes() {
+    departmentRoutes.get('/departmentDetails/:id',globlemiddleware.ractifyError,departmentController.departmentDetails)
+
 
 }
 
 function postRoutes() {
-    departmentRoutes.post('/addDepartment',globlemiddleware.ractifyError,departmentController.addDepartment)
+    departmentRoutes.post('/addDepartment',globlemiddleware.authenticate , globlemiddleware.ractifyError,departmentController.addDepartment)
+}
+function patchRoutes(){
+    departmentRoutes.patch('/updateDepartment/:id', globlemiddleware.ractifyError,departmentController.departmentUpdate)
+
+}
+function deleteRoutes(){
+    departmentRoutes.delete('/deleteDepartment/:id',globlemiddleware.ractifyError,departmentController.departmentDelete)
+
 }
 
 function putRoutes() {

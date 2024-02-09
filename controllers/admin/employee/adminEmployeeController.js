@@ -7,48 +7,23 @@ const { env } = require("../../../environments/env");
 
 
 
-exports.employeeSignup = async (req, res, next) => {
-  try {
-    const data = req.body;
-    const hashedPassword = await bcrypt.hash(data.password, 10);
-    const registration = new Admin({
-      name: data.name,
-      email: data.email,
-      password: hashedPassword,
-      status: true,
-      role: 'Admin',
-      created_on: new Date(),
-    });
-
-    const admin = await registration.save();
-    admin.password = null;
-
-    res.send({
-      status: 201,
-      message: "Admin Register Successfully",
-      data: { admin },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
 
 exports.employeeLogin = async (req, res, next) => {
   try {
     const {email , password} = req.body;
-    const employee = await Admin.findOne({email})
+    const admin = await Admin.findOne({email})
     
-    const isMatched = await bcrypt.compare(password, employee.password);
+    const isMatched = await bcrypt.compare(password, admin.password);
         if (isMatched) {
             const token = jwt.sign(
-                { _id: Admin._id, email: Admin.email },
+                { _id: admin._id, email: admin.email },
                 env().jwt_secret
             );
-            Admin.password = null
+            admin.password = null
             if (!token) {
               throw new Error('Unable to login the user')
             }
-            res.send({ status: 200, message: "User Login successfully", data: { employee, token } });
+            res.send({ status: 200, message: "User Login successfully", data: { admin ,token } });
         } else {
             res.send({ status: 401, message: "Invalid email or password", data: {} });
         }
@@ -68,6 +43,7 @@ exports.addEmployee = async (req, res, next) => {
       name,
       employeeId,
       email,
+      password,
       designation,
       role,
       gender,
@@ -76,6 +52,7 @@ exports.addEmployee = async (req, res, next) => {
     } = req.body;
     const { profilepic } = req.body.files;
     let employeeRegister = new Employee();
+    const hashedPassword = await bcrypt.hash(password[0] , 10);
 if (profilepic) {
   // employeeRegister.profilepic = 
 }
@@ -88,11 +65,25 @@ if (profilepic) {
     employeeRegister.contact=contact[0]
     employeeRegister.startingDate=startingDate[0]
     const employee = await employeeRegister.save();
+
+    const registration = new Admin({
+      employeeId:employeeId[0],
+      name: name[0],
+      email: email[0],
+      password: hashedPassword,
+      status: true,
+      role: role[0]=='Owner'?'Admin':role[0]=='Admin'?'SubAdmin':role[0]=='Hr'?'Hr':'Employee',
+    });
+
+    const admin =registration.save();
+    admin .password =null;
+
+
     return res.status(201).send({
       statusText: "Created",
       status: 201,
       message: "employee registered successfully.",
-      data: { employee },
+      data: { employee ,admin},
     });
   } catch (error) {
     console.log('error',error)
@@ -119,7 +110,7 @@ exports.employeeDetails = async (req, res, next) => {
     res.status(400).send({
       statusText: "BAD REQUEST",
       status: 400,
-      message: error.message || "Getting error while registering employee",
+      message: error.message || "Getting error while geting  employee",
       data: {},
     });
   }
@@ -141,7 +132,7 @@ exports.employeeUpdate = async (req, res, next) => {
     res.status(400).send({
       statusText: "BAD REQUEST",
       status: 400,
-      message: error.message || "Getting error while registering employee",
+      message: error.message || "Getting error while updating  employee",
       data: {},
     });
   }
@@ -160,7 +151,7 @@ exports.employeeDelete = async (req, res, next) => {
     res.status(400).send({
       statusText: "BAD REQUEST",
       status: 400,
-      message: error.message || "Getting error while registering employee",
+      message: error.message || "Getting error while deleting  employee",
       data: {},
     });
   }

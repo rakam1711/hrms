@@ -1,6 +1,9 @@
 const Mongoose = require("mongoose");
 
 const adminSchema = new Mongoose.Schema({
+  employeeId: {
+    type: String,
+  },
   name: {
     type: String,
   },
@@ -19,14 +22,14 @@ const adminSchema = new Mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["Admin", "SubAdmin"],
+    enum: ["Admin","SubAdmin", "Hr","Employee"],
     default: "Admin",
   },
-  created_at: {
+  createdOn: {
     type: Date,
     default: Date.now,
   },
-  updated_at: {
+  updatedOn: {
     type: Date,
     default: Date.now,
   },

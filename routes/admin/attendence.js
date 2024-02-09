@@ -16,7 +16,7 @@ function getRoutes() {
 }
 
 function postRoutes() {
-    attendenceRoutes.post('/addAttendence',globlemiddleware.ractifyError,attendenceController.addAttendence)
+    attendenceRoutes.post('/addAttendence',globlemiddleware.authenticate,globlemiddleware.ractifyError,attendenceController.addAttendence)
 }
 
 function putRoutes() {

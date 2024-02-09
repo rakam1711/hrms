@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator');
 const formidable = require('formidable')
 const {env} = require('../environments/env')
+const jwt = require('jsonwebtoken')
 
 exports.ractifyError = (req, res, next) => {
 
@@ -15,7 +16,7 @@ exports.ractifyError = (req, res, next) => {
 
 exports.authenticate = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    if (!authorization) {
+    if (!authHeader) {
         res.json({
           success: false,
           errors: { message: 'User not logged in' },
@@ -25,14 +26,15 @@ exports.authenticate = (req, res, next) => {
       }
     const token = authHeader.split(' ')[1]
     try {
-        jwt.verify(token, env().jwt_secret, ((err, decoded) => {
+        jwt.verify(token, env().jwt_secret, ((err, data) => {
             if (err) {
                 next(err)
-            } else if (!decoded) {
+            } else if (!data) {
                 req.errorStatus = 401;
                 next(new Error('User Not Authorised'))
             } else {
-                req.employeeData = decoded;
+                console.log('middle',data)
+                req.employeeData = data;
                 next();
             }
         }))

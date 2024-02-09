@@ -12,10 +12,11 @@ const employeeSchema = new mongoose.Schema({
     designation:{type:String},
     startingDate:{type:Date,},
     leavingDate:{type:Date },
-
+createdOn:{type:Date,default:Date.now()},
+updatedOn:{type:Date,default:Date.now()}
 })
 employeeSchema.plugin(aggregatePaginate);
-const Employee = mongoose.model('employee',employeeSchema)
+const Employee = mongoose.model('Employee',employeeSchema)
 
 
 module.exports = Employee

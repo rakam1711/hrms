@@ -9,9 +9,17 @@ const ContactSchema = new mongoose.Schema({
     budget:{type:String},
     projectType:{type:String},
     ndaCopy:{type:Boolean,default:false},
-    marketing:{type:Boolean,default:false}
+    marketing:{type:Boolean,default:false},
+    createdOn: {
+        type: Date,
+        default: Date.now,
+      },
+      updatedOn: {
+        type: Date,
+        default: Date.now,
+      },
 })
 ContactSchema.plugin(aggregatePaginate)
-const Contact = mongoose.model('contacts',ContactSchema)
+const Contact = mongoose.model('Contact',ContactSchema)
 
 module.exports = Contact
