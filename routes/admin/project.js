@@ -1,37 +1,20 @@
 const express = require("express");
 const projectRoutes = express.Router();
-const projectController = require('../../controllers/admin/projects/adminProjectController');
-const globlemiddleware = require('../../middlewares/globlemiddleware');
+const projectController = require("../../controllers/admin/projects/adminProjectController");
+const globlemiddleware = require("../../middlewares/globlemiddleware");
 
-function initilization() {
-    getRoutes();
-    postRoutes();
-    putRoutes();
-    patchRoutes();
-    deleteRoutes();
-}
+projectRoutes.get("/departmentDetails/:id", projectController.projectDetails);
 
-initilization();
+projectRoutes.post(
+  "/addDepartment",
+  globlemiddleware.authenticate,
+  projectController.addProject
+);
 
-function getRoutes() {
-    projectRoutes.get('/departmentDetails/:id',globlemiddleware.ractifyError,projectController.projectDetails)
+projectRoutes.patch("/updateDepartment/:id", projectController.projectUpdate);
 
+projectRoutes.delete("/deleteDepartment/:id", projectController.projectDelete);
 
-}
-
-function postRoutes() {
-    projectRoutes.post('/addDepartment',globlemiddleware.authenticate , globlemiddleware.ractifyError,projectController.addProject)
-}
-function patchRoutes(){
-    projectRoutes.patch('/updateDepartment/:id', globlemiddleware.ractifyError,projectController.projectUpdate)
-
-}
-function deleteRoutes(){
-    projectRoutes.delete('/deleteDepartment/:id',globlemiddleware.ractifyError,projectController.projectDelete)
-
-}
-
-function putRoutes() {
-}
+function putRoutes() {}
 
 module.exports = projectRoutes;

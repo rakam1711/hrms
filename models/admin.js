@@ -18,11 +18,11 @@ const adminSchema = new Mongoose.Schema({
   },
   status: {
     type: Boolean,
-    default: true
+    default: true,
   },
   role: {
     type: String,
-    enum: ["Admin","SubAdmin", "Hr","Employee"],
+    enum: ["Admin", "SubAdmin", "Hr", "Employee"],
     default: "Admin",
   },
   createdOn: {
@@ -35,4 +35,4 @@ const adminSchema = new Mongoose.Schema({
   },
 });
 const Admin = Mongoose.model("Admin", adminSchema);
-module.exports = Admin
+module.exports = Admin;

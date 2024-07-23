@@ -1,17 +1,12 @@
-const mongoose= require('mongoose');
-const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
+const mongoose = require("mongoose");
 
 const departmentSchema = new mongoose.Schema({
-    admin : {type:mongoose.Schema.Types.ObjectId ,ref :'Admin' , required:true} ,
-    departmentName: { type: String, required: true },
-    departmentHead :{type: String ,required:true},
-    place :{type :String },
-    email: { type: String, lowercase: true},
-    
+  admin: { type: mongoose.Schema.Types.ObjectId, ref: "Admin", required: true },
+  departmentName: { type: String, required: true },
+  departmentHead: { type: String, required: true },
+  place: { type: String },
+  email: { type: String, lowercase: true },
+});
+const Department = mongoose.model("department", departmentSchema);
 
-})
-departmentSchema.plugin(aggregatePaginate);
-const Department = mongoose.model('department',departmentSchema)
-
-
-module.exports = Department
+module.exports = Department;

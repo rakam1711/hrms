@@ -1,37 +1,27 @@
 const express = require("express");
 const departmentRoutes = express.Router();
-const departmentController = require('../../controllers/admin/departments/adminDepartmentController');
-const globlemiddleware = require('../../middlewares/globlemiddleware');
+const departmentController = require("../../controllers/admin/departments/adminDepartmentController");
+const globlemiddleware = require("../../middlewares/globlemiddleware");
 
-function initilization() {
-    getRoutes();
-    postRoutes();
-    putRoutes();
-    patchRoutes();
-    deleteRoutes();
-}
+departmentRoutes.get(
+  "/departmentDetails/:id",
+  departmentController.departmentDetails
+);
 
-initilization();
+departmentRoutes.post(
+  "/addDepartment",
+  globlemiddleware.authenticate,
+  departmentController.addDepartment
+);
 
-function getRoutes() {
-    departmentRoutes.get('/departmentDetails/:id',globlemiddleware.ractifyError,departmentController.departmentDetails)
+departmentRoutes.patch(
+  "/updateDepartment/:id",
+  departmentController.departmentUpdate
+);
 
-
-}
-
-function postRoutes() {
-    departmentRoutes.post('/addDepartment',globlemiddleware.authenticate , globlemiddleware.ractifyError,departmentController.addDepartment)
-}
-function patchRoutes(){
-    departmentRoutes.patch('/updateDepartment/:id', globlemiddleware.ractifyError,departmentController.departmentUpdate)
-
-}
-function deleteRoutes(){
-    departmentRoutes.delete('/deleteDepartment/:id',globlemiddleware.ractifyError,departmentController.departmentDelete)
-
-}
-
-function putRoutes() {
-}
+departmentRoutes.delete(
+  "/deleteDepartment/:id",
+  departmentController.departmentDelete
+);
 
 module.exports = departmentRoutes;

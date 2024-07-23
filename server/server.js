@@ -3,8 +3,11 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-const Routes = require('../routes/routes');
+const Routes = require("../routes/routes");
 const { env } = require("../environments/env");
+var bodyParser = require("body-parser");
+const multer = require("multer");
+// app.use(multer().any()); // This will handle any form data
 
 const initilization = () => {
   setupCors();
@@ -27,7 +30,9 @@ const setupCors = () => {
 const setupBodyParser = () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
+  app.use(bodyParser.json());
 };
+console.log(env()?.MONGO_URI, "db++++++++++++++++++++++++++++");
 const setupDatabase = () => {
   mongoose
     .connect(env()?.MONGO_URI)
@@ -39,31 +44,31 @@ const setupDatabase = () => {
     });
 };
 
-const setupRoutes =()=>{
-    app.use("/api/v1", Routes)
-}
+const setupRoutes = () => {
+  app.use("/api/v1", Routes);
+};
 
-const setupError404Handler=()=>{
-    app.use((req,res)=>{
-        res.status(404).send({
-            statusText:'Failure',
-            status:404,
-            message:'Not Found',
-            data:{}
-        });
-    })
-}
-const setupErrorHandler=()=>{
-    app.use((error,req,res,next)=>{
-      console.log('error',error,req)
-        res.status(req.errorStatus||500).send({
-            statusText:'Failure',
-            status:req.errorStatus||500,
-            message:error.message ||'Something went wrong. Please try again later.',
-            data:{}
-        });
-    })
-}
+const setupError404Handler = () => {
+  app.use((req, res) => {
+    res.status(404).send({
+      statusText: "Failure",
+      status: 404,
+      message: "Not Found",
+      data: {},
+    });
+  });
+};
+const setupErrorHandler = () => {
+  app.use((error, req, res, next) => {
+    console.log("error", error, req);
+    res.status(req.errorStatus || 500).send({
+      statusText: "Failure",
+      status: req.errorStatus || 500,
+      message: error.message || "Something went wrong. Please try again later.",
+      data: {},
+    });
+  });
+};
 
 initilization();
 

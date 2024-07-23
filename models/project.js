@@ -1,16 +1,10 @@
-const mongoose= require('mongoose');
-const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
+const mongoose = require("mongoose");
 
 const projectSchema = new mongoose.Schema({
-    admin : {type:mongoose.Schema.Types.ObjectId ,ref :'Admin' , required:true} ,
-    projectName: { type: String, required: true },
-    projectHead :{type: String ,required:true},
-    
-    
+  admin: { type: mongoose.Schema.Types.ObjectId, ref: "Admin", required: true },
+  projectName: { type: String, required: true },
+  projectHead: { type: String, required: true },
+});
+const Project = mongoose.model("Project", projectSchema);
 
-})
-projectSchema.plugin(aggregatePaginate);
-const Project = mongoose.model('Project',projectSchema)
-
-
-module.exports = Project
+module.exports = Project;

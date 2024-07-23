@@ -1,40 +1,25 @@
 const express = require("express");
 const employeeRoutes = express.Router();
-const {addEmployee,employeeDetails , employeeUpdate , employeeDelete ,employeeLogin , employeeSignup} = require('../../controllers/admin/employee/adminEmployeeController');
-const {listingContacts} = require('../../controllers/admin/contact/adminContactController')
-const globlemiddleware = require('../../middlewares/globlemiddleware');
+const {
+  addEmployee,
+  employeeDetails,
+  employeeUpdate,
+  employeeDelete,
+  employeeLogin,
+} = require("../../controllers/admin/employee/adminEmployeeController");
+const {
+  listingContacts,
+} = require("../../controllers/admin/contact/adminContactController");
+const globlemiddleware = require("../../middlewares/globlemiddleware");
 
-function initilization() {
-    getRoutes();
-    postRoutes();
-    putRoutes();
-    patchRoutes();
-    deleteRoutes();
-}
+employeeRoutes.get("/employeeDetails/:id", employeeDetails);
+employeeRoutes.get("/employeeList", listingContacts);
 
-initilization();
+employeeRoutes.post("/addEmployee", addEmployee);
+employeeRoutes.post("/loginEmployee", employeeLogin);
 
-function getRoutes() {
-    employeeRoutes.get('/employeeDetails/:id',globlemiddleware.ractifyError , employeeDetails);
-    employeeRoutes.get('/employeeList',globlemiddleware.ractifyError , listingContacts);
+employeeRoutes.patch("/updateEmployee/:id", employeeUpdate);
 
-    
-}
-
-function postRoutes() {
-    employeeRoutes.post('/addEmployee',globlemiddleware.formDataParser,globlemiddleware.ractifyError,addEmployee);
-    employeeRoutes.post('/loginEmployee',globlemiddleware.ractifyError,employeeLogin);
-}
-
-function putRoutes() {
-
-}
-
-function patchRoutes(){
-    employeeRoutes.patch('/updateEmployee/:id',globlemiddleware.ractifyError , employeeUpdate)
-}
-function deleteRoutes(){
-    employeeRoutes.delete('/deleteEmployee/:id' ,globlemiddleware.ractifyError , employeeDelete )
-}
+employeeRoutes.delete("/deleteEmployee/:id", employeeDelete);
 
 module.exports = employeeRoutes;
